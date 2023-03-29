@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import { daysOfWeek, months } from '../../../constants/dates';
+import { DateContext } from '../../contexts';
 import styles from './TodaysInfo.module.scss'
 
 const TodaysInfo = () => {
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const date = new Date();
-  const dayOfWeek = daysOfWeek[date.getDay()];
+  const date = useContext(DateContext);
+  const dayOfWeek = daysOfWeek.full[date.getDay()];
   const dayOfMonth = date.getDate();
 
   return (
