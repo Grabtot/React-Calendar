@@ -1,0 +1,19 @@
+.current-day {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .day-of-week {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .day-of-month {
+    font-size: 6rem;
+    font-weight: bold;
+  }
+}
