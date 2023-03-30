@@ -10,9 +10,9 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 const CalendarMonth = () => {
-  const [selectedDay, setSelectedDay] = useState();
   const { theme } = useTheme();
   const date = useContext(DateContext);
+  const [selectedDay, setSelectedDay] = useState(date);
   const [currantDate, setCurrantDate] = useState(date);
 
   const year = currantDate.getFullYear();
@@ -21,13 +21,12 @@ const CalendarMonth = () => {
   const daysBefore = new Date(year, currantDate.getMonth(), 1).getDay();
   const days = [];
 
-  const selectDay = (e) => {
-    setSelectedDay(Number(e.target.outerText));
+  const selectDay = ({ target: { outerText } }) => {
+    setSelectedDay(new Date(currantDate.getFullYear(), currantDate.getMonth(), Number(outerText)));
   }
 
-  const changeDate = ({ target: { id } }) => {
+  const changeDate = ({ currentTarget: { id } }) => {
     const newDate = new Date(currantDate);
-
     switch (id) {
       case 'next':
         newDate.setMonth(newDate.getMonth() + 1);
@@ -54,7 +53,9 @@ const CalendarMonth = () => {
     const isToday = i === date.getDate() &&
       currantDate.getMonth() === date.getMonth() &&
       date.getFullYear() === currantDate.getFullYear() ? styles.today : style.empty;
-    const isSelected = i === selectedDay ? styles.selected : style.empty;
+    const isSelected = i === selectedDay.getDate() &&
+      selectedDay.getMonth() === currantDate.getMonth() &&
+      selectedDay.getFullYear() === currantDate.getFullYear() ? styles.selected : style.empty;
     const dayStyle = cx(styles.day, {
       [styles.today]: isToday,
       [styles.dark]: theme === THEME.DARK,
