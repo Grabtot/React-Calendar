@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { daysOfWeek } from '../../../constants/dates';
-import { DateContext } from '../../../contexts';
+import { DateContext } from '../../../contexts/DateContext';
 import styles from './TodaysInfo.module.scss'
 
 const TodaysInfo = () => {

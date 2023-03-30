@@ -1,5 +1,5 @@
 import React from 'react';
-import { DateContext } from '../../contexts';
+import { DateContext } from '../../contexts/DateContext';
 import styles from './Calendar.module.scss';
 import CalendarMonth from './CalendarMonth/CalendarMonth';
 import TodaysInfo from './TodaysInfo/TodaysInfo';

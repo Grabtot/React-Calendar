@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styles from './CalendarMonth.module.scss';
 import { daysOfWeek, months } from '../../../constants/dates';
-import { DateContext } from '../../../contexts';
+import { DateContext } from '../../../contexts/DateContext';
 
 const CalendarMonth = () => {
   const date = useContext(DateContext);
