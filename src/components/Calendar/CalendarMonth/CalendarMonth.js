@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import styles from './CalendarMonth.module.scss';
 import { daysOfWeek, months } from '../../../constants/dates';
-import { DateContext } from '../../contexts';
+import { DateContext } from '../../../contexts';
 
 const CalendarMonth = () => {
   const date = useContext(DateContext);
-  const year = date.getFullYear(); 
+  const year = date.getFullYear();
   const month = months[date.getMonth()];
   const daysInMonth = new Date(year, date.getMonth() + 1, 0).getDate();
   const daysBefore = new Date(year, date.getMonth(), 1).getDay();
