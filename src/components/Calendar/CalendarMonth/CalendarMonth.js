@@ -6,24 +6,54 @@ import cx from 'classnames'
 import { useTheme } from '../../../contexts/ThemeContext';
 import { style } from '@mui/system';
 import { THEME } from '../../../constants/themes';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 const CalendarMonth = () => {
   const [selectedDay, setSelectedDay] = useState();
-
   const { theme } = useTheme();
   const date = useContext(DateContext);
-  const year = date.getFullYear();
-  const month = months[date.getMonth()];
-  const daysInMonth = new Date(year, date.getMonth() + 1, 0).getDate();
-  const daysBefore = new Date(year, date.getMonth(), 1).getDay();
+  const [currantDate, setCurrantDate] = useState(date);
+
+  const year = currantDate.getFullYear();
+  const month = months[currantDate.getMonth()];
+  const daysInMonth = new Date(year, currantDate.getMonth() + 1, 0).getDate();
+  const daysBefore = new Date(year, currantDate.getMonth(), 1).getDay();
   const days = [];
+
+  const selectDay = (e) => {
+    setSelectedDay(Number(e.target.outerText));
+  }
+
+  const changeDate = ({ target: { id } }) => {
+    const newDate = new Date(currantDate);
+
+    switch (id) {
+      case 'next':
+        newDate.setMonth(newDate.getMonth() + 1);
+        setCurrantDate(newDate);
+        break;
+
+      case 'prev':
+        newDate.setMonth(newDate.getMonth() - 1);
+        setCurrantDate(newDate);
+        break;
+      default:
+        alert("Error!");
+        break;
+    }
+    console.log(newDate);
+  };
+
 
   for (let i = 0; i < daysBefore; i++) {
     days.push(<div key={i} className={styles.day + ' ' + styles.empty} />);
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
-    const isToday = i === date.getDate() ? styles.today : style.empty;
+    const isToday = i === date.getDate() &&
+      currantDate.getMonth() === date.getMonth() &&
+      date.getFullYear() === currantDate.getFullYear() ? styles.today : style.empty;
     const isSelected = i === selectedDay ? styles.selected : style.empty;
     const dayStyle = cx(styles.day, {
       [styles.today]: isToday,
@@ -31,12 +61,8 @@ const CalendarMonth = () => {
       [styles.selected]: isSelected
     });
 
-    const handleClick = (e) => {
-      setSelectedDay(Number(e.target.outerText));
-    }
-
     days.push(
-      <div key={i + daysBefore} className={dayStyle} onClick={handleClick}>
+      <div key={i + daysBefore} className={dayStyle} onClick={selectDay}>
         {i}
       </div>,
     );
@@ -50,6 +76,10 @@ const CalendarMonth = () => {
     <div className={calendarTheme}>
       <div className={styles.month}>{month}</div>
       <div className={styles.year}>{year}</div>
+      <div className={styles['nav-buttons']}>
+        <NavigateBeforeIcon fontSize='large' id='prev' className={styles.button} onClick={changeDate} />
+        <NavigateNextIcon fontSize='large' id='next' className={styles.button} onClick={changeDate} />
+      </div>
       <div className={styles.days}>
         <div className={styles['days-container']}>
           {daysOfWeek.short.map((day, index) => (

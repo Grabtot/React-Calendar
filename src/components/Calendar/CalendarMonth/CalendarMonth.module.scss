@@ -6,19 +6,6 @@
   justify-content: flex-start;
   align-items: center;
 
-  &.dark {
-
-    .day-of-month {
-      color: #58a6ff;
-    }
-
-
-
-    .weekend {
-      color: #ff7070;
-    }
-  }
-
   .month {
     font-size: 3rem;
     font-weight: bold;
@@ -29,6 +16,23 @@
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 2rem;
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    .button {
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: 0.2s ease-in-out;
+      padding: 15px;
+    }
+
+    &:hover {
+      border-color: #2196f3;
+      border-radius: 10px;
+    }
   }
 
   .days-of-week {
@@ -54,7 +58,7 @@
     align-items: center;
     width: 100%;
     height: calc(100% - 8rem);
-  
+
 
     .days-container {
       display: grid;
@@ -74,34 +78,6 @@
         align-items: center;
         border-radius: 10px;
         cursor: pointer;
-
-        &.dark {
-
-          color: #fff;
-          background-color: transparent;
-
-          &.today {
-            background-color: #ff7070;;
-
-            &:hover {
-              background-color: #ff8e8e;
-            }
-
-            &.selected {
-              background-color: #e63939;
-            }
-          }
-
-          &:hover {
-            background-color: #1c6ab8;
-          }
-
-          &.selected {
-            background-color: #58a6ff;
-            transition: background-color 0.3s ease-in-out;
-          }
-        }
-
 
         &.empty {
           visibility: hidden;
@@ -127,8 +103,47 @@
           background-color: #2196f3;
           transition: background-color 0.3s ease-in-out;
         }
+
+        &.dark {
+
+          color: #fff;
+          background-color: transparent;
+
+          &.today {
+            background-color: #ff7070;
+            ;
+
+            &:hover {
+              background-color: #ff8e8e;
+            }
+
+            &.selected {
+              background-color: #e63939;
+            }
+          }
+
+          &:hover {
+            background-color: #1c6ab8;
+          }
+
+          &.selected {
+            background-color: #58a6ff;
+            transition: background-color 0.3s ease-in-out;
+          }
+        }
+
       }
     }
   }
 
+  &.dark {
+
+    .day-of-month {
+      color: #58a6ff;
+    }
+
+    .weekend {
+      color: #ff7070;
+    }
+  }
 }
