@@ -5,6 +5,7 @@ import styles from './Calendar.module.scss';
 import CalendarMonth from './CalendarMonth/CalendarMonth';
 import TodaysInfo from './TodaysInfo/TodaysInfo';
 import cx from 'classnames';
+import ToDoList from './ToDoList/ToDoList';
 
 const Calendar = () => {
   const { theme } = useTheme();
@@ -15,6 +16,7 @@ const Calendar = () => {
       <DateContext.Provider value={new Date()}>
         <TodaysInfo />
         <CalendarMonth />
+        <ToDoList />
       </DateContext.Provider>
     </div>
   );
