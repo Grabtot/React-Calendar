@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
+import { THEME } from '../../../constants/themes';
 
 const ThemeSwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -19,12 +20,12 @@ const ThemeSwitch = styled(Switch)(({ theme }) => ({
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+        backgroundColor: theme === THEME.DARK ? '#8796A5' : '#aab4be',
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+    backgroundColor: theme === THEME.DARK ? '#003892' : '#001e3c',
     width: 32,
     height: 32,
     '&:before': {
@@ -43,7 +44,7 @@ const ThemeSwitch = styled(Switch)(({ theme }) => ({
   },
   '& .MuiSwitch-track': {
     opacity: 1,
-    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+    backgroundColor: theme === THEME.DARK ? '#8796A5' : '#aab4be',
     borderRadius: 20 / 2,
   },
 }));
