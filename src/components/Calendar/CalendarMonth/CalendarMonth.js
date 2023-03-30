@@ -17,9 +17,46 @@ const CalendarMonth = () => {
 
   const year = currantDate.getFullYear();
   const month = months[currantDate.getMonth()];
-  const daysInMonth = new Date(year, currantDate.getMonth() + 1, 0).getDate();
-  const daysBefore = new Date(year, currantDate.getMonth(), 1).getDay();
-  const days = [];
+
+
+  const generateDays = () => {
+    const daysInMonth = new Date(year, currantDate.getMonth() + 1, 0).getDate();
+    const daysBefore = new Date(year, currantDate.getMonth(), 1).getDay();
+    const days = [];
+
+    for (let i = 0; i < daysBefore; i++) {
+      days.push(<div key={i} className={styles.day + ' ' + styles.empty} />);
+    }
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      const isToday = i === date.getDate() &&
+        currantDate.getMonth() === date.getMonth() &&
+        date.getFullYear() === currantDate.getFullYear() ? styles.today : style.empty;
+      const isSelected = i === selectedDay.getDate() &&
+        selectedDay.getMonth() === currantDate.getMonth() &&
+        selectedDay.getFullYear() === currantDate.getFullYear() ? styles.selected : style.empty;
+      const dayStyle = cx(styles.day, {
+        [styles.today]: isToday,
+        [styles.dark]: theme === THEME.DARK,
+        [styles.selected]: isSelected
+      });
+
+      days.push(
+        <div key={i + daysBefore} className={dayStyle} onClick={selectDay}>
+          {i}
+        </div>,
+      );
+    }
+    return days;
+  }
+
+  const generateDaysOfWeek = () => {
+    return daysOfWeek.short.map((day, index) => (
+      <div key={index} className={cx(styles["day-of-week"], day === 'S' ? styles["weekend"] : styles)}>
+        {day}
+      </div>
+    ))
+  }
 
   const selectDay = ({ target: { outerText } }) => {
     setSelectedDay(new Date(currantDate.getFullYear(), currantDate.getMonth(), Number(outerText)));
@@ -44,35 +81,9 @@ const CalendarMonth = () => {
     console.log(newDate);
   };
 
-
-  for (let i = 0; i < daysBefore; i++) {
-    days.push(<div key={i} className={styles.day + ' ' + styles.empty} />);
-  }
-
-  for (let i = 1; i <= daysInMonth; i++) {
-    const isToday = i === date.getDate() &&
-      currantDate.getMonth() === date.getMonth() &&
-      date.getFullYear() === currantDate.getFullYear() ? styles.today : style.empty;
-    const isSelected = i === selectedDay.getDate() &&
-      selectedDay.getMonth() === currantDate.getMonth() &&
-      selectedDay.getFullYear() === currantDate.getFullYear() ? styles.selected : style.empty;
-    const dayStyle = cx(styles.day, {
-      [styles.today]: isToday,
-      [styles.dark]: theme === THEME.DARK,
-      [styles.selected]: isSelected
-    });
-
-    days.push(
-      <div key={i + daysBefore} className={dayStyle} onClick={selectDay}>
-        {i}
-      </div>,
-    );
-  }
-
-
-
   const calendarTheme = cx(styles['calendar-month'], styles[theme]);
-
+  const days = generateDays();
+  const renderedDaysOfWeek = generateDaysOfWeek();
   return (
     <div className={calendarTheme}>
       <div className={styles.month}>{month}</div>
@@ -83,11 +94,7 @@ const CalendarMonth = () => {
       </div>
       <div className={styles.days}>
         <div className={styles['days-container']}>
-          {daysOfWeek.short.map((day, index) => (
-            <div key={index} className={cx(styles["day-of-week"], day === 'S' ? styles["weekend"] : styles)}>
-              {day}
-            </div>
-          ))}
+          {renderedDaysOfWeek}
           {days}
         </div>
       </div>
