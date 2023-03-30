@@ -6,6 +6,15 @@
   background-color: #f8f8f8;
 }
 
+.dark {
+  background-color: #242526;
+  color: #f8f8f8;
+
+  .avatar svg {
+    color: black;
+  }
+}
+
 .navbar {
   height: 100%;
   display: flex;
@@ -37,12 +46,5 @@
       display: flex;
       align-items: center;
     }
-  }
-}
-
-.dark {
-  .toolbar {
-    background-color: gray;
-    color: white;
   }
 }

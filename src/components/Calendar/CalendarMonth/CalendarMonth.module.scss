@@ -6,6 +6,19 @@
   justify-content: flex-start;
   align-items: center;
 
+  &.dark {
+
+    .day-of-month {
+      color: #58a6ff;
+    }
+
+
+
+    .weekend {
+      color: #ff7070;
+    }
+  }
+
   .month {
     font-size: 3rem;
     font-weight: bold;
@@ -25,6 +38,10 @@
     margin-bottom: 1rem;
   }
 
+  .weekend {
+    color: red;
+  }
+
   .day-of-week {
     font-size: 1.5rem;
     font-weight: bold;
@@ -37,6 +54,7 @@
     align-items: center;
     width: 100%;
     height: calc(100% - 8rem);
+  
 
     .days-container {
       display: grid;
@@ -44,6 +62,7 @@
       grid-gap: 0.5rem;
       width: 90%;
       height: 90%;
+      padding: 10px;
 
       .day {
         font-size: 2rem;
@@ -53,21 +72,50 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        border-radius: 10px;
         cursor: pointer;
+
+        &.dark {
+
+          color: #fff;
+          background-color: transparent;
+
+          &.today {
+            background-color: #ff7070;;
+
+            &:hover {
+              background-color: #ff8e8e;
+            }
+
+            &.selected {
+              background-color: #e63939;
+            }
+          }
+
+          &:hover {
+            background-color: #1c6ab8;
+          }
+
+          &.selected {
+            background-color: #58a6ff;
+            transition: background-color 0.3s ease-in-out;
+          }
+        }
+
 
         &.empty {
           visibility: hidden;
         }
 
         &.today {
-          background-color: #2196f3;
+          background-color: red;
 
           &:hover {
-            background-color: #1565c0;
+            background-color: #ff4a4a;
           }
 
-          &:active {
-            background-color: #0d47a1;
+          &.selected {
+            background-color: #cc0000;
           }
         }
 
@@ -75,11 +123,12 @@
           background-color: #f8f8f8;
         }
 
-        &:active {
-          background-color: #d3caca;
+        &.selected {
+          background-color: #2196f3;
           transition: background-color 0.3s ease-in-out;
         }
       }
     }
   }
+
 }

@@ -7,7 +7,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 
 function App() {
   return (
-    <ThemeProvider value={THEME.LIGHT}>
+    <ThemeProvider value={THEME.DARK}>
       <Toolbar />
       <Calendar />
     </ThemeProvider>
