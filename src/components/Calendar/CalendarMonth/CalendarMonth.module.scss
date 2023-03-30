@@ -1,10 +1,12 @@
 .calendar-month {
-  width: 50%;
+  width: 33%;
+  min-width: 30%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  transition: width 0.2s;
 
   .month {
     font-size: 3rem;
@@ -18,11 +20,32 @@
     margin-bottom: 2rem;
   }
 
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    .button {
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: 0.2s ease-in-out;
+      padding: 15px;
+    }
+
+    &:hover {
+      border-color: #2196f3;
+      border-radius: 10px;
+    }
+  }
+
   .days-of-week {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 0.5rem;
     margin-bottom: 1rem;
+  }
+
+  .weekend {
+    color: red;
   }
 
   .day-of-week {
@@ -38,12 +61,14 @@
     width: 100%;
     height: calc(100% - 8rem);
 
+
     .days-container {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       grid-gap: 0.5rem;
       width: 90%;
       height: 90%;
+      padding: 10px;
 
       .day {
         font-size: 2rem;
@@ -53,6 +78,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        border-radius: 10px;
         cursor: pointer;
 
         &.empty {
@@ -60,14 +86,14 @@
         }
 
         &.today {
-          background-color: #2196f3;
+          background-color: red;
 
           &:hover {
-            background-color: #1565c0;
+            background-color: #ff4a4a;
           }
 
-          &:active {
-            background-color: #0d47a1;
+          &.selected {
+            background-color: #cc0000;
           }
         }
 
@@ -75,11 +101,66 @@
           background-color: #f8f8f8;
         }
 
-        &:active {
-          background-color: #d3caca;
+        &.selected {
+          background-color: #2196f3;
           transition: background-color 0.3s ease-in-out;
         }
+
+        &.dark {
+
+          color: #fff;
+          background-color: transparent;
+
+          &.today {
+            background-color: #ff7070;
+            ;
+
+            &:hover {
+              background-color: #ff8e8e;
+            }
+
+            &.selected {
+              background-color: #e63939;
+            }
+          }
+
+          &:hover {
+            background-color: #1c6ab8;
+          }
+
+          &.selected {
+            background-color: #58a6ff;
+            transition: background-color 0.3s ease-in-out;
+          }
+        }
+
       }
     }
   }
+
+  &.dark {
+
+    .day-of-month {
+      color: #58a6ff;
+    }
+
+    .weekend {
+      color: #ff7070;
+    }
+  }
+  @media (max-width: 940px) {
+    width: 51%;
+  
+    .day-of-month {
+      font-size: 4rem;
+    }
+  
+    .day-of-week {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  
+  }
 }
+
