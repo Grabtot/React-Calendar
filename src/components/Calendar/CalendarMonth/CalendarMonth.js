@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './CalendarMonth.module.scss';
 import { daysOfWeek, months } from '../../../constants/dates';
 import { DateContext } from '../../../contexts/DateContext';
@@ -8,15 +8,39 @@ import { style } from '@mui/system';
 import { THEME } from '../../../constants/themes';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import { getAll } from '../../../api';
 
 const CalendarMonth = () => {
   const { theme } = useTheme();
-  const date = useContext(DateContext);
-  const [selectedDay, setSelectedDay] = useState(date);
+  const { date,selectedDay,setSelectedDay } = useContext(DateContext);
+  const [tasks, setTasks] = useState(new Map());
+  // const [, ] = useState(date);
   const [currantDate, setCurrantDate] = useState(date);
 
   const year = currantDate.getFullYear();
   const month = months[currantDate.getMonth()];
+
+  useEffect(() => {
+    getAll()
+      .then((data) => {
+        const tasksMap = new Map();
+
+        data.forEach((task) => {
+          const taskDate = new Date(task.date);
+          taskDate.setHours(0, 0, 0, 0);
+          const dateString = taskDate.toISOString().split('T')[0];
+          if (tasksMap.has(dateString)) {
+            tasksMap.get(dateString).push(task);
+          } else {
+            tasksMap.set(dateString, [task]);
+          }
+        });
+        setTasks(tasksMap);
+      })
+      .catch((error) => {
+        console.error('Произошла ошибка:', error);
+      });
+  }, []);
 
 
   const generateDays = () => {
@@ -25,20 +49,23 @@ const CalendarMonth = () => {
     const days = [];
 
     for (let i = 0; i < daysBefore; i++) {
-      days.push(<div key={i} className={styles.day + ' ' + styles.empty} />);
+      days.push(<div key={i} className={cx(styles.day, styles.empty)} />);
     }
 
+    const iterDate = new Date(year, currantDate.getMonth(), 1);
+
+    console.log("tasks" + tasks);
     for (let i = 1; i <= daysInMonth; i++) {
-      const isToday = i === date.getDate() &&
-        currantDate.getMonth() === date.getMonth() &&
-        date.getFullYear() === currantDate.getFullYear() ? styles.today : style.empty;
-      const isSelected = i === selectedDay.getDate() &&
-        selectedDay.getMonth() === currantDate.getMonth() &&
-        selectedDay.getFullYear() === currantDate.getFullYear() ? styles.selected : style.empty;
+      const isToday = iterDate.getTime() === date.setHours(0, 0, 0, 0);
+      const isSelected = iterDate.getTime() === selectedDay.setHours(0, 0, 0, 0);
+      const dateString = iterDate.toISOString().split('T')[0];
+      const hasTasks = tasks.has(dateString) && tasks.get(dateString).length > 0;
+
       const dayStyle = cx(styles.day, {
         [styles.today]: isToday,
         [styles.dark]: theme === THEME.DARK,
-        [styles.selected]: isSelected
+        [styles.selected]: isSelected,
+        [styles["has-tasks"]]: hasTasks
       });
 
       days.push(
@@ -46,9 +73,12 @@ const CalendarMonth = () => {
           {i}
         </div>,
       );
+
+      iterDate.setDate(iterDate.getDate() + 1);
     }
     return days;
-  }
+  };
+
 
   const generateDaysOfWeek = () => {
     return daysOfWeek.short.map((day, index) => (
@@ -69,7 +99,6 @@ const CalendarMonth = () => {
         newDate.setMonth(newDate.getMonth() + 1);
         setCurrantDate(newDate);
         break;
-
       case 'prev':
         newDate.setMonth(newDate.getMonth() - 1);
         setCurrantDate(newDate);
@@ -78,7 +107,6 @@ const CalendarMonth = () => {
         alert("Error!");
         break;
     }
-    console.log(newDate);
   };
 
   const calendarTheme = cx(styles['calendar-month'], styles[theme]);

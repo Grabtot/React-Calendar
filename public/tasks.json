@@ -1,0 +1,71 @@
+[
+  {
+    "date": "2023-03-30T00:00:00.000Z",
+    "tasks": [
+      {
+        "task": "Buy a bear",
+        "isDone": false
+      },
+      {
+        "task": "Drink a bear",
+        "isDone": false
+      }
+    ]
+  },
+  {
+    "date": "2023-04-05T00:00:00.000Z",
+    "tasks": [
+      {
+        "task": "Go to the gym",
+        "isDone": true
+      },
+      {
+        "task": "Prepare for the meeting",
+        "isDone": true
+      },
+      {
+        "task": "Buy groceries",
+        "isDone": false
+      }
+    ]
+  },
+  {
+    "date": "2023-04-10T00:00:00.000Z",
+    "tasks": [
+      {
+        "task": "Finish the report",
+        "isDone": false
+      },
+      {
+        "task": "Call the client",
+        "isDone": true
+      }
+    ]
+  },
+  {
+    "date": "2023-04-20T00:00:00.000Z",
+    "tasks": [
+      {
+        "task": "Clean the house",
+        "isDone": false
+      }
+    ]
+  },
+  {
+    "date": "2023-04-25T00:00:00.000Z",
+    "tasks": [
+      {
+        "task": "Pay the bills",
+        "isDone": true
+      },
+      {
+        "task": "Visit the doctor",
+        "isDone": false
+      },
+      {
+        "task": "Finish the presentation",
+        "isDone": false
+      }
+    ]
+  }
+]
