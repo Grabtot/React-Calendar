@@ -14,7 +14,7 @@ export const getAll = async () => {
 export const addNew = async (newDate) => {
   try {
     const response = await axios.post('http://localhost:5000/todos', newDate);
-    return response.data;
+    return response.data.id;
   } catch (error) {
     console.error('Произошла ошибка:', error);
     throw new Error('Ошибка при добавлении новой задачи');
