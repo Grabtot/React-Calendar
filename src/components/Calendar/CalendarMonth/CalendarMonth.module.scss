@@ -83,6 +83,10 @@
           visibility: hidden;
         }
 
+        &.has-tasks {
+          color: orange;
+        }
+
         &.today {
           background-color: red;
 
@@ -108,6 +112,10 @@
 
           color: #fff;
           background-color: transparent;
+
+          &.has-tasks {
+            color: orange;
+          }
 
           &.today {
             background-color: #ff7070;

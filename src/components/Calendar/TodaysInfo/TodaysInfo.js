@@ -6,7 +6,7 @@ import cx from 'classnames'
 import { useTheme } from '../../../contexts/ThemeContext';
 
 const TodaysInfo = () => {
-  const date = useContext(DateContext);
+  const { date } = useContext(DateContext);
   const dayOfWeek = daysOfWeek.full[date.getDay()];
   const dayOfMonth = date.getDate();
 
