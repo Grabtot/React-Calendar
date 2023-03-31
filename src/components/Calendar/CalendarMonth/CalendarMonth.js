@@ -8,11 +8,10 @@ import { THEME } from '../../../constants/themes';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { getAll } from '../../../api';
-import { wait } from '@testing-library/user-event/dist/utils';
 
 const CalendarMonth = () => {
   const { theme } = useTheme();
-  const { date, selectedTask, setTask } = useContext(DateContext);
+  const { date, selectedTask: selectedDate, setSelectedDate } = useContext(DateContext);
   const [tasks, setTasks] = useState(new Map());
   const [currantDate, setCurrantDate] = useState(date);
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -21,7 +20,6 @@ const CalendarMonth = () => {
   const month = months[currantDate.getMonth()];
 
   useEffect(() => {
-    console.log("use eff");
     getAll()
       .then((data) => {
         const tasksMap = new Map();
@@ -35,7 +33,7 @@ const CalendarMonth = () => {
       .catch((error) => {
         console.error('Произошла ошибка:', error);
       });
-  }, [selectedTask]);
+  }, [selectedDate]);
 
 
   const generateDays = () => {
@@ -88,9 +86,9 @@ const CalendarMonth = () => {
       currantDate.getMonth(), Number(outerText));
 
     if (tasks.has(newSelectedDay.toLocaleDateString())) {
-      setTask(tasks.get(newSelectedDay.toLocaleDateString()));
+      setSelectedDate(tasks.get(newSelectedDay.toLocaleDateString()));
     } else {
-      setTask({ date: newSelectedDay })
+      setSelectedDate({ date: newSelectedDay.toLocaleDateString(), id: 0, tasks: [] })
     }
 
     setSelectedDay(newSelectedDay);
@@ -116,7 +114,6 @@ const CalendarMonth = () => {
   const calendarTheme = cx(styles['calendar-month'], styles[theme]);
   const days = generateDays();
   const renderedDaysOfWeek = generateDaysOfWeek();
-  console.log("render cal");
   return (
     <div className={calendarTheme}>
       <div className={styles.month}>{month}</div>
