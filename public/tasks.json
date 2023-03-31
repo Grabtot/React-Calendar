@@ -1,69 +1,74 @@
 [
   {
-    "date": "2023-03-30T00:00:00.000Z",
+    "id": 1,
+    "date": "2023-03-30",
     "tasks": [
       {
-        "task": "Buy a bear",
+        "task": "Купить пиво",
         "isDone": false
       },
       {
-        "task": "Drink a bear",
+        "task": "Выпить пива",
         "isDone": false
       }
     ]
   },
   {
-    "date": "2023-04-05T00:00:00.000Z",
+    "id": 2,
+    "date": "2023-04-05",
     "tasks": [
       {
-        "task": "Go to the gym",
+        "task": "Сходить в спортзал",
         "isDone": true
       },
       {
-        "task": "Prepare for the meeting",
+        "task": "Подготовиться к встрече",
         "isDone": true
       },
       {
-        "task": "Buy groceries",
+        "task": "Купить продукты",
         "isDone": false
       }
     ]
   },
   {
-    "date": "2023-04-10T00:00:00.000Z",
+    "id": 3,
+    "date": "2023-04-10",
     "tasks": [
       {
-        "task": "Finish the report",
+        "task": "Закончить отчет",
         "isDone": false
       },
       {
-        "task": "Call the client",
+        "task": "Позвонить клиенту",
         "isDone": true
       }
     ]
   },
   {
-    "date": "2023-04-20T00:00:00.000Z",
+    "id": 4,
+    "date": "2023-04-20",
     "tasks": [
       {
-        "task": "Clean the house",
+        "task": "Убраться в доме",
         "isDone": false
       }
     ]
   },
   {
-    "date": "2023-04-25T00:00:00.000Z",
+    "id": 5,
+    "date": "2023-04-25",
     "tasks": [
       {
-        "task": "Pay the bills",
+        "task": "Оплатить счета",
         "isDone": true
       },
       {
-        "task": "Visit the doctor",
+        "task": "Посетить врача",
         "isDone": false
       },
       {
-        "task": "Finish the presentation",
+        "task": "Закончить презентацию",
         "isDone": false
       }
     ]

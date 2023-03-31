@@ -9,11 +9,12 @@ import ToDoList from './ToDoList/ToDoList';
 
 const Calendar = () => {
   const { theme } = useTheme();
-  const [selectedDay, setSelectedDay] = useState(new Date());
+  // const [selectedDay, setSelectedDay] = useState(new Date());
+  const [task, setTask] = useState({date: new Date()});
   const calendarStyle = cx(styles.calendar, styles[theme])
   return (
     <div className={calendarStyle}>
-      <DateContext.Provider value={{ date: new Date(), selectedDay: selectedDay, setSelectedDay: setSelectedDay }}>
+      <DateContext.Provider value={{ date: new Date(), selectedTask: task, setTask: setTask }}>
         <TodaysInfo />
         <CalendarMonth />
         <ToDoList />

@@ -4,18 +4,18 @@ import { daysOfWeek, months } from '../../../constants/dates';
 import { DateContext } from '../../../contexts/DateContext';
 import cx from 'classnames'
 import { useTheme } from '../../../contexts/ThemeContext';
-import { style } from '@mui/system';
 import { THEME } from '../../../constants/themes';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { getAll } from '../../../api';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 const CalendarMonth = () => {
   const { theme } = useTheme();
-  const { date,selectedDay,setSelectedDay } = useContext(DateContext);
+  const { date, selectedTask, setTask } = useContext(DateContext);
   const [tasks, setTasks] = useState(new Map());
-  // const [, ] = useState(date);
   const [currantDate, setCurrantDate] = useState(date);
+  const [selectedDay, setSelectedDay] = useState(new Date());
 
   const year = currantDate.getFullYear();
   const month = months[currantDate.getMonth()];
@@ -26,14 +26,8 @@ const CalendarMonth = () => {
         const tasksMap = new Map();
 
         data.forEach((task) => {
-          const taskDate = new Date(task.date);
-          taskDate.setHours(0, 0, 0, 0);
-          const dateString = taskDate.toISOString().split('T')[0];
-          if (tasksMap.has(dateString)) {
-            tasksMap.get(dateString).push(task);
-          } else {
-            tasksMap.set(dateString, [task]);
-          }
+          const taskDate = new Date(task.date).toLocaleDateString();
+          tasksMap.set(taskDate, { ...task, date: taskDate });
         });
         setTasks(tasksMap);
       })
@@ -54,12 +48,12 @@ const CalendarMonth = () => {
 
     const iterDate = new Date(year, currantDate.getMonth(), 1);
 
-    console.log("tasks" + tasks);
     for (let i = 1; i <= daysInMonth; i++) {
       const isToday = iterDate.getTime() === date.setHours(0, 0, 0, 0);
       const isSelected = iterDate.getTime() === selectedDay.setHours(0, 0, 0, 0);
-      const dateString = iterDate.toISOString().split('T')[0];
-      const hasTasks = tasks.has(dateString) && tasks.get(dateString).length > 0;
+
+      const dateString = iterDate.toLocaleDateString();
+      const hasTasks = tasks.has(dateString);
 
       const dayStyle = cx(styles.day, {
         [styles.today]: isToday,
@@ -89,7 +83,16 @@ const CalendarMonth = () => {
   }
 
   const selectDay = ({ target: { outerText } }) => {
-    setSelectedDay(new Date(currantDate.getFullYear(), currantDate.getMonth(), Number(outerText)));
+    const newSelectedDay = new Date(currantDate.getFullYear(),
+      currantDate.getMonth(), Number(outerText));
+
+    if (tasks.has(newSelectedDay.toLocaleDateString())) {
+      setTask(tasks.get(newSelectedDay.toLocaleDateString()));
+    } else {
+      setTask({ date: newSelectedDay })
+    }
+
+    setSelectedDay(newSelectedDay);
   }
 
   const changeDate = ({ currentTarget: { id } }) => {
