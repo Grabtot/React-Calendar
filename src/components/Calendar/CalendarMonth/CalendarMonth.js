@@ -11,7 +11,7 @@ import { getAll } from '../../../api';
 
 const CalendarMonth = () => {
   const { theme } = useTheme();
-  const { date, selectedTask: selectedDate, setSelectedDate } = useContext(DateContext);
+  const { date, selectedDate, setSelectedDate } = useContext(DateContext);
   const [tasks, setTasks] = useState(new Map());
   const [currantDate, setCurrantDate] = useState(date);
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -20,6 +20,7 @@ const CalendarMonth = () => {
   const month = months[currantDate.getMonth()];
 
   useEffect(() => {
+    console.log("use effect");
     getAll()
       .then((data) => {
         const tasksMap = new Map();
