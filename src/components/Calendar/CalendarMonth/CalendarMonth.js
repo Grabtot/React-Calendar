@@ -12,7 +12,7 @@ import { wait } from '@testing-library/user-event/dist/utils';
 
 const CalendarMonth = () => {
   const { theme } = useTheme();
-  const { date, selectedTask, setTask } = useContext(DateContext);
+  const { date, setTask } = useContext(DateContext);
   const [tasks, setTasks] = useState(new Map());
   const [currantDate, setCurrantDate] = useState(date);
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -27,6 +27,8 @@ const CalendarMonth = () => {
 
         data.forEach((task) => {
           const taskDate = new Date(task.date).toLocaleDateString();
+          // console.log(task.date);
+          // console.log(taskDate);
           tasksMap.set(taskDate, { ...task, date: taskDate });
         });
         setTasks(tasksMap);
