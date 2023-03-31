@@ -3,21 +3,39 @@ import TaskList from './TasksList/TaskList';
 import AddTask from './AddTask/AddTask';
 import styles from './ToDoList.module.scss'
 import { DateContext } from '../../../contexts/DateContext';
+import { addNew, update } from '../../../api';
 // import { FilterContext } from '../../context';
 
 function ToDoList() {
   const { selectedDate, setSelectedDate } = useContext(DateContext);
   const { id, date, tasks } = selectedDate;
-  // const [filter, setFilter] = useState(FILTER.ALL);
 
-  const addTask = (name) => {
-    const newTasks = [
-      ...tasks, {
-        id: tasks.length,
-        name,
-        done: false
-      }];
-    // setTasks(newTasks);
+
+
+  const reformatDate = (dateString) => {
+    const [day, month, year] = dateString.split('.');
+    const reformattedDate = `${year}-${month}-${day}`;
+    return reformattedDate;
+  };
+
+  const addTask = async (name) => {
+    console.log(tasks);
+    const newTask = { id: tasks.length + 1, task: name, isDone: false }
+    if (id === 0) {
+      const newSelectedDate = { date: reformatDate(date), tasks: [newTask] };
+      const newId = await addNew(newSelectedDate);
+      console.log(newId);
+      const newSelectedTask = { ...newSelectedDate, id: newId };
+      setSelectedDate(newSelectedTask);
+    }
+    else {
+      const newSelectedTasks = [...tasks, newTask]
+      const newSelectedDate = { ...selectedDate, date: date, tasks: newSelectedTasks };
+      console.log(newSelectedDate);
+      await update(selectedDate.id, newSelectedDate);
+      setSelectedDate(newSelectedDate);
+    }
+
   }
 
   const removeTask = (id) => {
@@ -25,12 +43,17 @@ function ToDoList() {
     // setTasks(arrWithoutRemovedElement);
   }
 
-  const taskDone = (id) => {
+  const taskDone = async (id) => {
     const newTasks = tasks.map(task => ({
       ...task,
-      done: task.id === id ? !task.done : task.done
+      isDone: task.id === id ? !task.isDone : task.isDone
     }));
-    // setTasks(newTasks);
+    console.log(newTasks);
+    const formatedDate = reformatDate(...selectedDate.date);
+    const newSelectedDate = { ...selectedDate, date: formatedDate, tasks: newTasks };
+
+    await update(selectedDate.id, newSelectedDate);
+    setSelectedDate(newSelectedDate);
   }
 
   const changeName = (id, name) => {
