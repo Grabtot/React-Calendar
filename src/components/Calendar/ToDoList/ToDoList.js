@@ -1,57 +1,52 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './ToDoList.module.scss';
 import { DateContext } from '../../../contexts/DateContext';
-import { getAll, addNew, update, remove } from '../../../api';
+import { addNew, update } from '../../../api';
 
 const ToDoList = () => {
-  const { selectedTask } = useContext(DateContext);
+  const { selectedTask, setTask } = useContext(DateContext);
   const [newTask, setNewTask] = useState('');
 
-  // useEffect(() => {
-  //   setTasks(selectedTask.tasks || []);
-  // }, [selectedTask]);
-  
-
+  // Функция для преобразования даты в нужный формат
   const reformatDate = (dateString) => {
-    console.log(dateString);
     const [day, month, year] = dateString.split('.');
     const reformattedDate = `${year}-${month}-${day}`;
-    console.log(reformattedDate);
     return reformattedDate;
   };
 
+  // Функция для создания новой задачи
   const createNewTask = async () => {
     if (newTask.trim() === '') return;
     const task = { task: newTask, isDone: false };
-
-    if (!selectedTask.hasOwnProperty('tasks')) {
+    if (!selectedTask.hasOwnProperty('id')) {
       const reformattedDate = reformatDate(selectedTask.date);
       const newDate = { ...selectedTask, date: reformattedDate, tasks: [task] };
       await addNew(newDate);
     } else {
+
       const reformattedDate = reformatDate(selectedTask.date);
-      selectedTask.tasks.push(task);
-      await update(selectedTask.id, { ...selectedTask, date: reformattedDate });
+      const updatedTasks = [...selectedTask.tasks, task];
+      const updatedSelectedTask = { ...selectedTask, tasks: updatedTasks };
+      await update(selectedTask.id, { ...updatedSelectedTask, date: reformattedDate });
+      setTask(updatedSelectedTask);
     }
     setNewTask('');
   };
 
-
-  const updateTaskStatus = async (index) => {
-    const updatedTasks = selectedTask.tasks.map((task, idx) => {
-      if (idx === index) {
-        return { ...task, isDone: !task.isDone };
-      }
-      return task;
-    });
-
+  // Функция для обновления статуса задачи
+  const updateTaskStatus = async (taskId) => {
+    const updatedTasks = [...selectedTask.tasks];
+    const updatedTask = updatedTasks[taskId];
+    updatedTask.isDone = !updatedTask.isDone;
+    updatedTasks[taskId] = updatedTask;
+    const updatedSelectedTask = { ...selectedTask, tasks: updatedTasks };
     const reformattedDate = reformatDate(selectedTask.date);
-    const updatedSelectedTask = { ...selectedTask, date: reformattedDate, tasks: updatedTasks };
-    await update(selectedTask.id, updatedSelectedTask);
+    await update(selectedTask.id, { ...updatedSelectedTask, date: reformattedDate });
+    setTask(updatedSelectedTask);
   };
 
-
-  if (!selectedTask.hasOwnProperty('tasks')) {
+  // Отображение компонента
+  if (!selectedTask.hasOwnProperty('id')) {
     return (
       <div className={styles.todo}>
         <h2>{selectedTask.date.toLocaleDateString()}</h2>
@@ -66,7 +61,7 @@ const ToDoList = () => {
         type="checkbox"
         checked={task.isDone}
         onChange={() => updateTaskStatus(index)}
-      ></input>
+      />
     </li>
   ));
 
@@ -79,7 +74,7 @@ const ToDoList = () => {
         value={newTask}
         onChange={(e) => setNewTask(e.target.value)}
         placeholder="Добавить задачу"
-      ></input>
+      />
       <button onClick={createNewTask}>Добавить</button>
     </div>
   );
