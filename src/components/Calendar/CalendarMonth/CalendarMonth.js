@@ -12,7 +12,7 @@ import { wait } from '@testing-library/user-event/dist/utils';
 
 const CalendarMonth = () => {
   const { theme } = useTheme();
-  const { date, setTask } = useContext(DateContext);
+  const { date, selectedTask, setTask } = useContext(DateContext);
   const [tasks, setTasks] = useState(new Map());
   const [currantDate, setCurrantDate] = useState(date);
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -21,14 +21,13 @@ const CalendarMonth = () => {
   const month = months[currantDate.getMonth()];
 
   useEffect(() => {
+    console.log("use eff");
     getAll()
       .then((data) => {
         const tasksMap = new Map();
 
         data.forEach((task) => {
           const taskDate = new Date(task.date).toLocaleDateString();
-          // console.log(task.date);
-          // console.log(taskDate);
           tasksMap.set(taskDate, { ...task, date: taskDate });
         });
         setTasks(tasksMap);
@@ -36,7 +35,7 @@ const CalendarMonth = () => {
       .catch((error) => {
         console.error('Произошла ошибка:', error);
       });
-  }, []);
+  }, [selectedTask]);
 
 
   const generateDays = () => {
@@ -117,6 +116,7 @@ const CalendarMonth = () => {
   const calendarTheme = cx(styles['calendar-month'], styles[theme]);
   const days = generateDays();
   const renderedDaysOfWeek = generateDaysOfWeek();
+  console.log("render cal");
   return (
     <div className={calendarTheme}>
       <div className={styles.month}>{month}</div>
