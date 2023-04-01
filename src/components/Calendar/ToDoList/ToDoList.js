@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import TaskList from './TasksList/TaskList';
 import AddTask from './AddTask/AddTask';
 import styles from './ToDoList.module.scss'
@@ -6,26 +6,29 @@ import { DateContext } from '../../../contexts/DateContext';
 import { addNew, update } from '../../../api';
 // import { FilterContext } from '../../context';
 
+
+const reformatDate = (dateString) => {
+  const [day, month, year] = dateString.split('.');
+  const reformattedDate = `${year}-${month}-${day}`;
+  return reformattedDate;
+};
 function ToDoList() {
   const { selectedDate, setSelectedDate } = useContext(DateContext);
   const { id, date, tasks } = selectedDate;
 
-
-
-  const reformatDate = (dateString) => {
-    const [day, month, year] = dateString.split('.');
-    const reformattedDate = `${year}-${month}-${day}`;
-    return reformattedDate;
-  };
+  console.log(id);
+  console.log(date);
+  console.log(tasks);
 
   const addTask = async (name) => {
-    console.log(tasks);
+    // console.log(tasks);
     const newTask = { id: tasks.length + 1, task: name, isDone: false }
     if (id === 0) {
-      const newSelectedDate = { date: reformatDate(date), tasks: [newTask] };
-      const newId = await addNew(newSelectedDate);
-      console.log(newId);
-      const newSelectedTask = { ...newSelectedDate, id: newId };
+      let newSelectedDate = { date: reformatDate(date), tasks: [newTask] };
+      newSelectedDate = await addNew(newSelectedDate);
+      // console.log(newId);
+      const localeDate = new Date(newSelectedDate.date).toLocaleDateString();
+      const newSelectedTask = { ...newSelectedDate, date: localeDate };
       setSelectedDate(newSelectedTask);
     }
     else {
@@ -39,7 +42,7 @@ function ToDoList() {
   }
 
   const removeTask = (id) => {
-    const arrWithoutRemovedElement = tasks.slice(0, id).concat(tasks.slice(id + 1));
+    // const arrWithoutRemovedElement = tasks.slice(0, id).concat(tasks.slice(id + 1));
     // setTasks(arrWithoutRemovedElement);
   }
 
@@ -57,10 +60,10 @@ function ToDoList() {
   }
 
   const changeName = (id, name) => {
-    const newTasks = tasks.map(task => ({
-      ...task,
-      name: task.id == id ? name : task.name
-    }));
+    // const newTasks = tasks.map(task => ({
+    //   ...task,
+    //   name: task.id === id ? name : task.name
+    // }));
     // setTasks(newTasks);
   }
 
