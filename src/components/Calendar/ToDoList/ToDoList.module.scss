@@ -1,8 +1,13 @@
-.todo {
+#todo {
   width: 33%;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-left: 2px solid gray;
   // color: white;
+}
+
+#add-task {
+  display: flex;
+  margin-bottom: 15px;
 }
