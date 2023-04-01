@@ -4,12 +4,20 @@ import React, { useState } from 'react';
 
 const AddTask = (props) => {
   const [task, setTask] = useState('');
+
+  const addTask = () => {
+    if (task === '')
+      return;
+    props.addTask(task);
+    setTask('');
+  }
+
   return (
     <div>
       <label>
-        <Input sx={{ color: 'white' }} type='text' name='name' value={task} onChange={({ target: { value } }) => setTask(value)}
+        <Input name='task' sx={{ color: 'white' }} type='text' value={task} onChange={({ target: { value } }) => setTask(value)}
           placeholder='Enter task' />
-        <IconButton sx={{ color: '#0099cc' }} onClick={() => props.addTask(task)}>
+        <IconButton sx={{ color: '#0099cc' }} onClick={addTask}>
           <Add />
         </IconButton>
       </label>

@@ -20,11 +20,9 @@ const CalendarMonth = () => {
   const month = months[currantDate.getMonth()];
 
   useEffect(() => {
-    console.log("use effect");
     getAll()
       .then((data) => {
         const tasksMap = new Map();
-
         data.forEach((task) => {
           const taskDate = new Date(task.date).toLocaleDateString();
           tasksMap.set(taskDate, { ...task, date: taskDate });

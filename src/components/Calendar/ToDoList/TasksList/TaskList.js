@@ -22,7 +22,7 @@ const TaskList = (props) => {
     <div className={styles["task-list"]}>
       {
         tasks.map((task, index) => <label key={index}>
-          <Input sx={{ color: 'white' }} className={styles.input} type='text' value={task.task} onChange={({ target: { value } }) => props.changeName(task.id, value)} />
+          <Input sx={{ color: 'white' }} className={styles.input} type='text' name='task' value={task.task} onChange={({ target: { value } }) => props.changeName(task.id, value)} />
           <Checkbox sx={{ color: '#0099cc' }} type='checkbox' onChange={() => props.taskDone(task.id)} checked={task.isDone} />
           <IconButton color='error' onClick={() => props.removeTask(task.id)}>
             <DeleteIcon />
