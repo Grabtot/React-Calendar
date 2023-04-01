@@ -1,10 +1,12 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TaskList from './TasksList/TaskList';
 import AddTask from './AddTask/AddTask';
 import styles from './ToDoList.module.scss'
 import { DateContext } from '../../../contexts/DateContext';
 import { addNew, remove, update } from '../../../api';
-// import { FilterContext } from '../../context';
+import { FILTER } from './../../../constants/filters'
+import { FilterContext } from '../../../contexts/FilterContext';
+import TasksFilter from './TasksFilter/TasksFilter';
 
 
 const reformatDate = (dateString) => {
@@ -12,11 +14,12 @@ const reformatDate = (dateString) => {
   const reformattedDate = `${year}-${month}-${day}`;
   return reformattedDate;
 };
+
 function ToDoList() {
   const { selectedDate, setSelectedDate } = useContext(DateContext);
   const { id: dateId, date, tasks } = selectedDate;
-  console.log("todo start");
-  console.log(dateId);
+  const [filter, setFilter] = useState(FILTER.ALL);
+
   const updateDate = async (newDate) => {
     const dbDate = reformatDate(date);
     await update(dateId, { ...newDate, date: dbDate });
@@ -45,7 +48,6 @@ function ToDoList() {
       const newSelectedDate = { ...selectedDate, tasks: newSelectedTasks };
       updateDate(newSelectedDate);
     }
-
   }
 
   const removeTask = (id) => {
@@ -87,21 +89,21 @@ function ToDoList() {
     updateDate(newSelectedDate);
   }
 
-  // const filterChanged = (filter) => {
-  //   setFilter(filter);
-  // }
-
+  const filterChanged = (filter) => {
+    console.log(filter);
+    setFilter(filter);
+  }
 
   return (
     <div className={styles.todo}>
-      {/* <FilterContext.Provider value={filter}> */}
-      <div>
-        <h2>{date}</h2>
-        <AddTask addTask={addTask} />
-        {/* <FilterTask filterChanged={filterChanged} /> */}
-      </div>
-      <TaskList tasks={tasks} taskDone={taskDone} removeTask={removeTask} changeName={changeName} />
-      {/* </FilterContext.Provider> */}
+      <FilterContext.Provider value={filter}>
+        <div>
+          <h2>{date}</h2>
+          <AddTask addTask={addTask} />
+          <TasksFilter filterChanged={filterChanged} />
+        </div>
+        <TaskList tasks={tasks} taskDone={taskDone} removeTask={removeTask} changeName={changeName} />
+      </FilterContext.Provider>
     </div>
   );
 }
