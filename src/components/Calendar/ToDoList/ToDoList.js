@@ -3,7 +3,7 @@ import TaskList from './TasksList/TaskList';
 import AddTask from './AddTask/AddTask';
 import styles from './ToDoList.module.scss'
 import { DateContext } from '../../../contexts/DateContext';
-import { addNew, update } from '../../../api';
+import { addNew, remove, update } from '../../../api';
 // import { FilterContext } from '../../context';
 
 
@@ -14,22 +14,18 @@ const reformatDate = (dateString) => {
 };
 function ToDoList() {
   const { selectedDate, setSelectedDate } = useContext(DateContext);
-  const { id, date, tasks } = selectedDate;
-
-  console.log(id);
-  console.log(date);
-  console.log(tasks);
-
+  const { id: dateId, date, tasks } = selectedDate;
+  console.log("todo start");
+  console.log(dateId);
   const updateDate = async (newDate) => {
     const dbDate = reformatDate(date);
-    await update(id, { ...newDate, date: dbDate });
+    await update(dateId, { ...newDate, date: dbDate });
     setSelectedDate(newDate);
   }
 
   const addTask = async (name) => {
-    // console.log(tasks);
-    const newTask = { id: tasks.length + 1, task: name, isDone: false }
-    if (id === 0) {
+    const newTask = { id: 1, task: name, isDone: false }
+    if (dateId === 0 || tasks.lenth === 0) {
       let newSelectedDate = { date: reformatDate(date), tasks: [newTask] };
       newSelectedDate = await addNew(newSelectedDate);
 
@@ -38,7 +34,14 @@ function ToDoList() {
       setSelectedDate(newSelectedTask);
     }
     else {
-      const newSelectedTasks = [...tasks, newTask]
+      console.log(tasks);
+      const maxId = tasks.reduce((max, task) => {
+        return task.id > max ? task.id : max;
+      }, -Infinity);
+      console.log("max id", maxId);
+      console.log("new id", maxId + 1);
+
+      const newSelectedTasks = [...tasks, { ...newTask, id: maxId + 1 }]
       const newSelectedDate = { ...selectedDate, tasks: newSelectedTasks };
       updateDate(newSelectedDate);
     }
@@ -46,8 +49,19 @@ function ToDoList() {
   }
 
   const removeTask = (id) => {
-    // const arrWithoutRemovedElement = tasks.slice(0, id).concat(tasks.slice(id + 1));
-    // setTasks(arrWithoutRemovedElement);
+    const tasksWithoutRemovedElement = tasks.filter(task => task.id != id)
+    console.log(id);
+    console.log(tasks);
+    console.log('delete', tasksWithoutRemovedElement);
+
+    if (tasksWithoutRemovedElement.length === 0) {
+      console.log('remov');
+      remove(dateId);
+      setSelectedDate({ id: 0, tasks: [], date: date })
+    } else {
+      const newSelectedDate = { ...selectedDate, tasks: tasksWithoutRemovedElement };
+      updateDate(newSelectedDate);
+    }
   }
 
   const taskDone = async (id) => {
@@ -55,19 +69,22 @@ function ToDoList() {
       ...task,
       isDone: task.id === id ? !task.isDone : task.isDone
     }));
-
+    console.log(id);
     console.log("checked: ", newTasks);
     const newSelectedDate = { ...selectedDate, tasks: newTasks };
     updateDate(newSelectedDate);
 
   }
 
-  const changeName = (id, name) => {
-    // const newTasks = tasks.map(task => ({
-    //   ...task,
-    //   name: task.id === id ? name : task.name
-    // }));
-    // setTasks(newTasks);
+  const changeName = (id, newName) => {
+    const newTasks = tasks.map(task => ({
+      ...task,
+      task: task.id === id ? newName : task.task
+    }));
+    console.log(id);
+    console.log("change name: ", newTasks);
+    const newSelectedDate = { ...selectedDate, tasks: newTasks };
+    updateDate(newSelectedDate);
   }
 
   // const filterChanged = (filter) => {
