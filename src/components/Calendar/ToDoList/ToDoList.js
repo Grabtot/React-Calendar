@@ -20,23 +20,27 @@ function ToDoList() {
   console.log(date);
   console.log(tasks);
 
+  const updateDate = async (newDate) => {
+    const dbDate = reformatDate(date);
+    await update(id, { ...newDate, date: dbDate });
+    setSelectedDate(newDate);
+  }
+
   const addTask = async (name) => {
     // console.log(tasks);
     const newTask = { id: tasks.length + 1, task: name, isDone: false }
     if (id === 0) {
       let newSelectedDate = { date: reformatDate(date), tasks: [newTask] };
       newSelectedDate = await addNew(newSelectedDate);
-      // console.log(newId);
+
       const localeDate = new Date(newSelectedDate.date).toLocaleDateString();
       const newSelectedTask = { ...newSelectedDate, date: localeDate };
       setSelectedDate(newSelectedTask);
     }
     else {
       const newSelectedTasks = [...tasks, newTask]
-      const newSelectedDate = { ...selectedDate, date: date, tasks: newSelectedTasks };
-      console.log(newSelectedDate);
-      await update(selectedDate.id, newSelectedDate);
-      setSelectedDate(newSelectedDate);
+      const newSelectedDate = { ...selectedDate, tasks: newSelectedTasks };
+      updateDate(newSelectedDate);
     }
 
   }
@@ -51,12 +55,11 @@ function ToDoList() {
       ...task,
       isDone: task.id === id ? !task.isDone : task.isDone
     }));
-    console.log(newTasks);
-    const formatedDate = reformatDate(...selectedDate.date);
-    const newSelectedDate = { ...selectedDate, date: formatedDate, tasks: newTasks };
 
-    await update(selectedDate.id, newSelectedDate);
-    setSelectedDate(newSelectedDate);
+    console.log("checked: ", newTasks);
+    const newSelectedDate = { ...selectedDate, tasks: newTasks };
+    updateDate(newSelectedDate);
+
   }
 
   const changeName = (id, name) => {
