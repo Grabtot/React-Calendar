@@ -95,10 +95,10 @@ function ToDoList() {
   }
 
   return (
-    <div className={styles.todo}>
+    <div id={styles.todo}>
       <FilterContext.Provider value={filter}>
-        <div>
-          <h2>{date}</h2>
+        <h2>{date}</h2>
+        <div id={styles['add-task']}>
           <AddTask addTask={addTask} />
           <TasksFilter filterChanged={filterChanged} />
         </div>

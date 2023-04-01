@@ -1,6 +1,7 @@
 import Add from '@mui/icons-material/Add';
-import { Button, IconButton, Input } from '@mui/material';
+import { Button, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import React, { useState } from 'react';
+import './AddTask.scss'
 
 const AddTask = (props) => {
   const [task, setTask] = useState('');
@@ -21,13 +22,19 @@ const AddTask = (props) => {
 
   return (
     <div>
-      <label>
-        <Input name='task' sx={{ color: 'white' }} type='text' value={task} onChange={({ target: { value } }) => setTask(value)}
-          placeholder='Enter task' onKeyUp={handleEnter} />
-        <IconButton sx={{ color: '#0099cc' }} onClick={addTask}>
-          <Add />
-        </IconButton>
-      </label>
+      <OutlinedInput
+        id='new-task-input'
+        name='task'
+        placeholder='New task'
+        value={task}
+        onChange={({ target: { value } }) => setTask(value)}
+        onKeyUp={handleEnter}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton onClick={addTask}>
+              <Add className='add' />
+            </IconButton>
+          </InputAdornment>} />
     </div>
   );
 }
