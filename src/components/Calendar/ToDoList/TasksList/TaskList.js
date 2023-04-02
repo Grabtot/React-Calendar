@@ -5,10 +5,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import styles from './TaskList.module.scss'
 import { FILTER } from '../../../../constants/filters';
 import { FilterContext } from '../../../../contexts/FilterContext';
+import { useTheme } from '@emotion/react';
+import cx from 'classnames'
 
 const TaskList = (props) => {
   const { tasks } = props;
   const filter = useContext(FilterContext);
+  const { theme } = useTheme();
 
   let filteredList = [];
   if (filter != FILTER.ALL) {
@@ -19,7 +22,7 @@ const TaskList = (props) => {
   }
 
   return (
-    <div className={styles["task-list"]}>
+    <div className={cx(styles["task-list"],styles[theme])}>
       {
         filteredList.map((task, index) => <label key={index}>
           <Input sx={{ color: 'white' }} className={styles.input} type='text' name='task' value={task.task} onChange={({ target: { value } }) => props.changeName(task.id, value)} />

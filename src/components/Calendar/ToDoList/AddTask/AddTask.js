@@ -1,10 +1,12 @@
 import Add from '@mui/icons-material/Add';
 import { Button, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import './AddTask.scss'
+import styles from './AddTask.module.scss'
+import { useTheme } from '../../../../contexts/ThemeContext';
 
 const AddTask = (props) => {
   const [task, setTask] = useState('');
+  const { theme } = useTheme();
 
   const addTask = () => {
     if (task === '')
@@ -21,9 +23,9 @@ const AddTask = (props) => {
 
 
   return (
-    <div>
+    <div className={styles[theme]}>
       <OutlinedInput
-        id='new-task-input'
+        id={styles['new-task-input']}
         name='task'
         placeholder='New task'
         value={task}
@@ -32,10 +34,10 @@ const AddTask = (props) => {
         endAdornment={
           <InputAdornment position="end">
             <IconButton onClick={addTask}>
-              <Add className='add' />
+              <Add className={styles.add} />
             </IconButton>
           </InputAdornment>} />
-    </div>
+    </div >
   );
 }
 
