@@ -3,6 +3,12 @@
   flex-direction: column;
 }
 
-.input{
-  color: white;
+.input {
+  color: black;
+}
+
+.dark {
+  .input {
+    color: white;
+  }
 }

@@ -1,0 +1,14 @@
+#new-task-input {
+  // color: red;
+  // background-color: red;
+  .dark & {
+    color: #ffffff;
+    background-color: transparent;
+  }
+}
+
+.dark {
+  .add {
+    color: #0099cc;
+  }
+}
